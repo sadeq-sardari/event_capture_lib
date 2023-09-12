@@ -1,8 +1,8 @@
-import pickle
+import json
 import warnings
+from datetime import datetime
 
 import requests
-import json
 from tenacity import retry, stop_after_attempt, wait_fixed
 
 from event_capture_lib.sinks.base_sink import BaseEventSink
@@ -16,17 +16,19 @@ class ApiEventSink(BaseEventSink):
         self._auth_key = auth_key
         super().__init__(limit)
 
+    @staticmethod
+    def default_serializer(data):
+        if isinstance(data, datetime):
+            return data.strftime('%Y-%m-%d %H:%M:%S.%f')
+        else:
+            return str(data)
+
     @retry(reraise=True, stop=stop_after_attempt(5), wait=wait_fixed(2))
     def _sender(self, events):
-        data = json.dumps(self.__prepare_events(events))
-        requests.post(self._api_url, json=data, headers={'auth_key': self._auth_key})
+        data = {'logs': events}
+        data = json.dumps(data, default=self.default_serializer)
 
-    @staticmethod
-    def __prepare_events(events):
-        for i in events:
-            f = pickle.loads(pickle.dumps(i, pickle.HIGHEST_PROTOCOL))  # fast deep copy
-            try:
-                f['timestamp'] = f['timestamp'].strftime('%Y-%m-%d %H:%M:%S.%f')
-            except (AttributeError, TypeError):
-                pass
-            yield f
+        rsp = requests.post(self._api_url, data=data, headers={'auth-key': self._auth_key,
+                                                               'content-type': 'application/json'})
+        if not rsp.status_code == 200:
+            raise Exception('status code was not 200')

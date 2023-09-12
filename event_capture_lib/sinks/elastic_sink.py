@@ -14,6 +14,7 @@ from event_capture_lib.sinks.base_sink import BaseEventSink
 
 warnings.filterwarnings("ignore")
 
+
 class ElasticEventSink(BaseEventSink):
     def __init__(self, limit, host: str, index_prefix: str):
         super().__init__(limit)
@@ -88,4 +89,3 @@ class ElasticEventSink(BaseEventSink):
                 time.sleep(60 * 60 * 12)
             except KeyboardInterrupt:
                 return
-
