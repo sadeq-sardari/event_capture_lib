@@ -1,4 +1,11 @@
-from .base import EventCaptureBuilder
-from .sinks.stdout_sink import StdoutEventSink
-from .sinks.api_sink import ApiEventSink
-from .sinks.elastic_sink import ElasticEventSink
+from event_capture_lib.base import EventCaptureBuilder
+from event_capture_lib.sinks.stdout_sink import StdoutEventSink
+from event_capture_lib.sinks.api_sink import ApiEventSink
+from event_capture_lib.sinks.elastic_sink import ElasticEventSink
+
+
+__all__ = [
+    "EventCaptureBuilder",
+    "StdoutEventSink",
+    "ApiEventSink",
+    "ElasticEventSink",]

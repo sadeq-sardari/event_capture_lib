@@ -1,6 +1,6 @@
 import json
 
-from .base_sink import BaseEventSink
+from event_capture_lib.sinks.base_sink import BaseEventSink
 
 
 class StdoutEventSink(BaseEventSink):

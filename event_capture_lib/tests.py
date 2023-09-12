@@ -1,7 +1,7 @@
 import time
 
 from base import EventCaptureBuilder
-from sinks import StdoutEventSink
+from event_capture_lib.sinks.stdout_sink import StdoutEventSink
 
 event_capture = EventCaptureBuilder([],
                                     {"project": 'dummy'})

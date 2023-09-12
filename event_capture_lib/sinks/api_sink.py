@@ -5,7 +5,7 @@ import requests
 import json
 from tenacity import retry, stop_after_attempt, wait_fixed
 
-from .base_sink import BaseEventSink
+from event_capture_lib.sinks.base_sink import BaseEventSink
 
 warnings.filterwarnings("ignore")
 
