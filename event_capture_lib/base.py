@@ -29,7 +29,7 @@ class EventCaptureBuilder:
         class EventContextManager:
             def __init__(self, event_name: str):
                 self.__event = get_event(event_name)
-                self.__event.timestamp = datetime.now()
+                self.__event.e.timestamp = datetime.now()
 
             def __enter__(self):
                 self.__time = perf_counter()
@@ -42,9 +42,9 @@ class EventCaptureBuilder:
                             scope.set_tag("logger", "event_capture")
                             capture_exception(exc_value)
                     exc = traceback.format_exc()
-                    self.__event.exception = exc
+                    self.__event.e.exception = exc
                 duration = round((perf_counter() - self.__time) * 1000, 2)  # in milliseconds
-                self.__event.duration = duration
+                self.__event.e.duration = duration
                 add_event(self.__event.e.toDict())
 
         return EventContextManager
