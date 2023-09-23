@@ -10,8 +10,8 @@ install_requires = get_requirements()
 
 setup(
     name="event_capture_lib",
-    version="0.6.1",
-    python_requires=">=3.9",
+    version="0.6.2",
+    python_requires=">=3.7",
     packages=find_packages(),
     install_requires=install_requires,
 )

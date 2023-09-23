@@ -65,9 +65,10 @@ class ElasticEventSink(BaseEventSink):
             self.__client.indices.create(index=index_name,
                                          mappings=idx_body["mappings"],
                                          settings=idx_body["settings"])
-        except elasticsearch.exceptions.RequestError as exception:
-            if exception.args[1] == 'resource_already_exists_exception':
-                pass
+        except Exception as exception:
+            if isinstance(exception, elasticsearch.exceptions.RequestError):
+                if exception.args[1] == 'resource_already_exists_exception':
+                    pass
             else:
                 traceback.print_exc()
 
@@ -75,12 +76,12 @@ class ElasticEventSink(BaseEventSink):
             self.__client.indices.create(index=self.get_index(),
                                          mappings=idx_body["mappings"],
                                          settings=idx_body["settings"])
-        except elasticsearch.exceptions.RequestError as exception:
-            if exception.args[1] == 'resource_already_exists_exception':
-                pass
+        except Exception as exception:
+            if isinstance(exception, elasticsearch.exceptions.RequestError):
+                if exception.args[1] == 'resource_already_exists_exception':
+                    pass
             else:
                 traceback.print_exc()
-        print('done')
 
     def elastic_search_daily_index_generator(self):
         while True:
